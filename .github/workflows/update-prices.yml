@@ -19,8 +19,7 @@ jobs:
         
     - name: Install dependencies
       run: |
-        npm init -y
-        npm install node-fetch@2
+        npm install node-fetch@2.6.7
         
     - name: Update Prices
       run: node update-prices.js
