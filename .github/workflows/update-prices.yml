@@ -1,0 +1,34 @@
+name: Update Prices
+
+on:
+  schedule:
+    - cron: '0 */1 * * *'  # Elk uur
+  workflow_dispatch:        # Handmatige trigger
+
+jobs:
+  update-prices:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+        
+    - name: Install dependencies
+      run: |
+        npm init -y
+        npm install node-fetch@2
+        
+    - name: Update Prices
+      run: node update-prices.js
+      
+    - name: Commit & Push
+      run: |
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git add prices.json
+        git commit -m "Update prices data" || exit 0
+        git push
